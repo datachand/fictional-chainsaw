@@ -2,7 +2,7 @@ var DomainStore = (function () {
 
 	function DomainStore () {
 		this.root = {};
-		this.END_PARAMETER = "$";
+		this.END_PARAMETER = "";
 	}
 
 	DomainStore.prototype.insert = function (value) {
@@ -13,18 +13,14 @@ var DomainStore = (function () {
 
 		for (var phase = 0; phase <= (contentLength-1); phase++) {
 			for (var j = 0; j <= phase+1; j++) {
-				// for (var i = j; i <= phase; i++) {
-				// 	index += content[i];
-				// }				
-				// current[index] = [0, i];
-				this.find(content, j, phase);
+				this.findAndExtend(content, j, phase);
 			}
 		}
 
 	};
 
 
-	DomainStore.prototype.find = function (value, j, phase) {
+	DomainStore.prototype.findAndExtend = function (value, j, phase) {
 		var current = this.root;
 		var index = "";
 		for (var i = j; i <= phase; i++) {
@@ -40,45 +36,34 @@ var DomainStore = (function () {
 
 	}
 
-	DomainStore.prototype.extend = function () {
+	DomainStore.prototype.findNodeBySuffix = function (suffix) {
+		var current = this.root;
+		var suffixLength = suffix.length;
+		var element;
 
+		for (var i = 0; i < suffixLength; i++) {
+			element = current[suffix[i]];
+			if (!element) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	DomainStore.prototype.extract = function (value) {
 		// /[^.\s\/]+\.([a-z]{3,}|[a-z]{3}.[a-z]{2}|[a-z]{2}.[a-z]{2})$/g
-		var expression = new RegExp(/\.([a-z]{3,}|[a-z]{3}.[a-z]{2}|[a-z]{2}.[a-z]{2})$/, 'g');
+		var expression = new RegExp(/\.([a-z]{2,}|[a-z]{3}.[a-z]{2}|[a-z]{2}.[a-z]{2})$/, 'g');
 		var match = value.split(expression);
 		// match.pop(); // Removes the residue index from Regex split
-		
-		this.insert(match[1]);
-		console.log(this.root);
+		if(!this.findNodeBySuffix(match[1])) {
+			this.insert(match[1]);
+		}
 		var lobby = match[0].split(".");
 		var lobbyLength = lobby.length;
 		var domainvalue = lobby[lobbyLength - 1] + "." + match[1];
+		console.log(this.root);
 		return domainvalue;
 
-	}
-
-
-	DomainStore.prototype.isEmpty = function (obj) {
-		var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-		// null and undefined are "empty"
-		if (obj == null) return true;
-
-		// Assume if it has a length property with a non-zero value
-		// that that property is correct.
-		if (obj.length > 0)    return false;
-		if (obj.length === 0)  return true;
-
-		// Otherwise, does it have any properties of its own?
-		// Note that this doesn't handle
-		// toString and valueOf enumeration bugs in IE < 9
-		for (var key in obj) {
-		    if (hasOwnProperty.call(obj, key)) return false;
-		}
-
-		return true;
 	}
 
 	return DomainStore;
