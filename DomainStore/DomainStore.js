@@ -8,22 +8,36 @@ var DomainStore = (function () {
 	DomainStore.prototype.insert = function (value) {
 		var content = value + this.END_PARAMETER;
 		var contentLength = value.length;
+		var index = "";
+		var current = this.root;
 
-		for (var phase = 0; phase <= (contentLength); phase++) {
+		for (var phase = 0; phase <= (contentLength-1); phase++) {
 			for (var j = 0; j <= phase+1; j++) {
+				// for (var i = j; i <= phase; i++) {
+				// 	index += content[i];
+				// }				
+				// current[index] = [0, i];
 				this.find(content, j, phase);
 			}
 		}
+
 	};
 
 
 	DomainStore.prototype.find = function (value, j, phase) {
-		var current = "";
+		var current = this.root;
+		var index = "";
 		for (var i = j; i <= phase; i++) {
-			current += (value[i]);
+			var temp = current[value[i]];
+
+			if (temp) {
+				current = temp
+			} else {
+				current[value[i]] = {};
+				current = current[value[i]];
+			}
 		}
 
-		console.log(current);
 	}
 
 	DomainStore.prototype.extend = function () {
@@ -37,6 +51,7 @@ var DomainStore = (function () {
 		// match.pop(); // Removes the residue index from Regex split
 		
 		this.insert(match[1]);
+		console.log(this.root);
 		var lobby = match[0].split(".");
 		var lobbyLength = lobby.length;
 		var domainvalue = lobby[lobbyLength - 1] + "." + match[1];
