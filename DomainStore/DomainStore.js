@@ -54,14 +54,35 @@ var DomainStore = (function () {
 		// /[^.\s\/]+\.([a-z]{3,}|[a-z]{3}.[a-z]{2}|[a-z]{2}.[a-z]{2})$/g
 		var expression = new RegExp(/\.([a-z]{2,}|[a-z]{3}.[a-z]{2}|[a-z]{2}.[a-z]{2})$/, 'g');
 		var match = value.split(expression);
-		// match.pop(); // Removes the residue index from Regex split
-		if(!this.findNodeBySuffix(match[1])) {
-			this.insert(match[1]);
-		}
+
 		var lobby = match[0].split(".");
 		var lobbyLength = lobby.length;
-		var domainvalue = lobby[lobbyLength - 1] + "." + match[1];
-		console.log(this.root);
+
+		if(!this.findNodeBySuffix(match[1])) { 
+			var domainvalue = {};
+			var court = match[1].split(".");
+			if (court.length === 2) { 
+				var checkExistenceOneTLD = this.findNodeBySuffix(court[court.length - 1]);
+				var existenceTLD = court[court.length - 1];
+
+				if (checkExistenceOneTLD) {
+					domainvalue = {"hold": true, "eo": true, "extn": existenceTLD, "extnT": match[1], "domain": {}};
+					
+				} else {
+					domainvalue = {"hold": true, "eo": false, "extn": existenceTLD, "extnT": match[1], "domain": {}};
+				}
+
+				domainvalue.domain[existenceTLD] = match[1];
+				domainvalue.domain[match[1]] = lobby[lobbyLength - 1] + "." + match[1];
+			} else {
+				this.insert(match[1]);		
+				domainvalue = {"hold": false, "domain": lobby[lobbyLength - 1] + "." + match[1]};
+			}
+
+		} else {
+			domainvalue = {"hold": false, "domain": lobby[lobbyLength - 1] + "." + match[1]};			
+		}
+
 		return domainvalue;
 
 	}

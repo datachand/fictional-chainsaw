@@ -9,10 +9,21 @@
 	</head>
 	<body>
 		<domain-search>
-			<input type="text" name="domain" placeholder="Type in Domain Name">
+			<input type="text" name="domain" placeholder="Type in Domain Name (subdomain.example.co.uk)">
 		</domain-search>
 		<domain-summary>
 
 		</domain-summary>
+		<status-bar>
+			<div id="statusOne" class="status-holder">
+				We detected that one of the TLD has been in existant with our systems. Please confirm which is the TLD <span class="sotldOne selector-holder"></span> or <span class="sotldTwo selector-holder"></span>
+			</div>
+			<div id="statusTwo" class="status-holder">
+				We're confused about this domain's TLD. Please let us know whether the TLD is <span class="sttldOne selector-holder"></span> or <span class="sttldTwo selector-holder"></span>
+			</div>
+			<div id="statusThree" class="status-holder">
+				Look's Good. We were able to find it.
+			</div>
+		</status-bar>
 	</body>
 </html>
