@@ -88,4 +88,46 @@ status-bar {
 	background: rgba(255, 255, 255, 1.0);
 	color: rgba(0, 0, 0, 1.0);
 	cursor: pointer;
+	border: 1px solid rgba(255, 255, 255, 1.0);
+	transition: all 0.3s ease 0s;    
+	padding: 0 0.5vw;
+}
+
+.selector-holder:hover {
+	color: rgba(255, 255, 255, 1.0);
+	background: rgba(0, 0, 0, 1.0);
+}
+
+disclaimer {
+	display: block;
+	position: relative;
+	width: 30%;
+	margin: 0 auto;
+	background: hsla(60, 8%, 95%, 1.0);
+	font-family: 'Hack';
+}
+
+
+figure.face {
+	float: left;
+    display: inline-block;
+    width: 7.5vw;
+    height: 20vh;
+    background-image: url('http://chandreshrm.name/face.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 75%;
+}
+
+disclaimer-title {
+	float: left;
+	display: block;
+	color: red;
+	font-weight: bold;
+}
+
+
+disclaimer-content {
+	float: left;
+	display: block;
 }

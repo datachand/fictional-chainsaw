@@ -16,6 +16,7 @@
 		var sttldOne = document.querySelector('.sttldOne');
 		var sttldTwo = document.querySelector(".sttldTwo");
 		var statusHolder = document.querySelectorAll(".status-holder");
+		var storeRootHolder = document.querySelector(".storeRootPrint");
 
 		summary.style.display = "none";
 		status.style.display = "none";
@@ -34,12 +35,12 @@
 
 		sttldTwo.addEventListener("click", SelectionInsert, false);
 
-		// domain.addEventListener("keyup", TextAction, false);
+		storeRootHolder.addEventListener("click", printStoreRootInConsole, false);
 
 		function DomainText (event) {
 			status.style.display = "none";
 			summary.style.display = "none";
-			
+
 			var keyCode = event.keyCode;
 
 			if (keyCode === 13) {
@@ -67,7 +68,6 @@
 		}
 
 		function displaySuffixSelector (baseDomain) {
-			console.log(baseDomain);
 			hideStatusHolder();
 			var tldOneText = (baseDomain.extn);
 			var tldTwoText = (baseDomain.extnT);
@@ -86,20 +86,6 @@
 			status.style.display = "block";
 		}
 
-		function TextAction (event) {
-			// status.style.display = "block";
-			// var currentStatus = StatusMessage("Receiving..")
-			// status.appendChild(currentStatus);
-			console.log("Receiving");
-		}
-
-		function StatusMessage (message) {
-			var node = document.createElement('span');
-			var text = document.createTextNode(message);
-			node.appendChild(text);
-			return node;
-		}
-
 		function SelectionInsert () {
 			var content = (this.textContent || this.innerText);
 			if (!store.findNodeBySuffix(content)) {
@@ -113,6 +99,12 @@
 			for (var sh = 0; sh < statusHolder.length; sh++) {
 				statusHolder[sh].style.display = "none";			
 			}
+		}
+
+		function printStoreRootInConsole () {
+			console.clear();
+			console.log("%c %c %c Root | DomainStore %c %c %c http://chandreshrm.name", "background: #f2f2f2","background: #dddddd","color: #222222; background: #cccccc;","background: #dddddd","background: #f2f2f2","background: #ffffff");
+			console.log(store.root);
 		}
 
 	}, true);
